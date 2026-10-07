@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gol de Placa — Monte sua mesa de futmesa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF3EF;--ink:#12261C;--mute:#4F655A;--card:#fff;--line:#CFDCD3;--pine:#12382A;--ball:#E8590C;--ballink:#fff;--ok:#1B7F4B;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1913;--ink:#E7F0EA;--mute:#9DB5A8;--card:#15261D;--line:#294235;--pine:#0A2319;--ball:#FF7A2B;--ballink:#1a0a00;--ok:#4CC58A}}
+:root[data-theme="dark"]{--bg:#0D1913;--ink:#E7F0EA;--mute:#9DB5A8;--card:#15261D;--line:#294235;--pine:#0A2319;--ball:#FF7A2B;--ballink:#1a0a00;--ok:#4CC58A}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;line-height:1.1;margin:0}
+header{background:var(--pine);color:#F2F7F3;padding:14px 20px}
+.bar{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font:800 22px "Bricolage Grotesque",sans-serif}
+.brand i{font-style:normal;color:var(--ball)}
+.bar p{margin:0;font-size:14px;opacity:.85}
+.hero{max-width:1120px;margin:0 auto;padding:36px 20px 12px}
+.hero h1{font-size:clamp(32px,6vw,56px);font-weight:800;max-width:14ch}
+.hero p{max-width:56ch;color:var(--mute);font-size:18px;margin:12px 0 0}
+main{max-width:1120px;margin:0 auto;padding:20px;display:grid;gap:28px;grid-template-columns:1fr}
+@media(min-width:920px){main{grid-template-columns:1fr 420px;align-items:start}.side{position:sticky;top:16px}}
+fieldset{border:0;padding:0;margin:0 0 28px;min-width:0}
+legend{padding:0;margin-bottom:4px;font:700 22px "Bricolage Grotesque",sans-serif}
+.hint{margin:0 0 12px;color:var(--mute);font-size:15px}
+.opts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.opts.sw{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt .b{display:block;height:100%;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 14px}
+.opt b{display:block;font-weight:700}
+.opt small{display:block;color:var(--mute);font-size:14px}
+.opt .pr{margin-top:6px;font-weight:700;font-size:15px}
+.opt input:checked+.b{border-color:var(--ball);box-shadow:0 0 0 2px var(--ball)}
+.opt input:focus-visible+.b{outline:3px solid var(--ink);outline-offset:2px}
+.sw .b{text-align:center;padding:10px 8px}
+.dot{display:block;width:40px;height:40px;border-radius:50%;margin:0 auto 6px;border:2px solid rgba(0,0,0,.25)}
+.sw b{font-size:14px}
+.check .b{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.check input:checked+.b::after{content:"✓";color:var(--ball);font-weight:800}
+.wd{display:block;height:10px;border-radius:6px;margin-bottom:8px;border:1px solid rgba(0,0,0,.2)}.tag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:99px;background:var(--pine);color:#fff;font-size:12px;font-weight:700}
+.side{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.prev svg{display:block;margin:0 auto;height:auto;filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+.prev p{margin:10px 0 0;text-align:center;color:var(--mute);font-size:14px}
+.sum h2{font-size:22px;margin-bottom:10px}
+.sum dl{margin:0}
+.sum .r{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px}
+.sum dt{color:var(--mute)}.sum dd{margin:0;text-align:right;font-weight:500}
+.tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px}
+.tot strong{font:800 30px "Bricolage Grotesque",sans-serif}
+.par{color:var(--mute);font-size:14px;margin:2px 0 10px}
+.qty{display:flex;align-items:center;gap:10px;margin:12px 0}
+.qty button{width:40px;height:40px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 20px inherit;cursor:pointer}
+.qty output{min-width:28px;text-align:center;font-weight:700}
+label.f{display:block;font-weight:500;font-size:15px;margin-top:10px}
+input.t{width:100%;padding:11px 12px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;margin-top:4px}
+input.t:focus-visible{outline:3px solid var(--ink);outline-offset:1px}
+.go{width:100%;margin-top:14px;padding:14px;border:0;border-radius:12px;background:var(--ball);color:var(--ballink);font:800 17px "Bricolage Grotesque",sans-serif;cursor:pointer}
+.go:hover{filter:brightness(1.08)}.go:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.done{text-align:center;padding:10px 0}
+.done h3{font-size:24px;color:var(--ok)}
+.done code{display:inline-block;margin:10px 0;padding:6px 12px;border-radius:8px;background:var(--bg);font-weight:700;font-size:18px}
+.done .go{background:var(--pine);color:#fff}
+[hidden]{display:none!important}
+footer{max-width:1120px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);font-size:14px}
+@media(prefers-reduced-motion:no-preference){.prev svg *{transition:fill .25s}}
+</style>
+</head>
+<body>
+<header><div class="bar"><div class="brand">Gol de Placa<i>.</i></div><p>Mesas de futmesa feitas sob encomenda</p></div></header>
+
+<section class="hero">
+<h1>Monte a sua mesa de futmesa</h1>
+<p>Rede no meio, bola nos pés e na cabeça. Escolha o tamanho, as cores e os acessórios da sua mesa, e veja o resultado ao lado enquanto decide.</p>
+</section>
+
+<main>
+<div id="opts"></div>
+
+<aside class="side">
+<div class="card prev"><div id="preview"></div><p id="dims"></p></div>
+<div class="card sum">
+<h2>Seu pedido</h2>
+<dl id="list"></dl>
+<div class="qty"><span>Quantidade</span><button type="button" id="minus" aria-label="Diminuir quantidade">−</button><output id="qty">1</output><button type="button" id="plus" aria-label="Aumentar quantidade">+</button></div>
+<div class="tot"><span>Total</span><strong id="total"></strong></div>
+<p class="par" id="par"></p>
+<form id="form">
+<label class="f">Nome<input class="t" name="nome" required autocomplete="name"></label>
+<label class="f">E-mail<input class="t" name="email" type="email" required autocomplete="email"></label>
+<label class="f">Cidade de entrega<input class="t" name="cidade" required autocomplete="address-level2"></label>
+<button class="go" type="submit">Enviar pedido</button>
+<p class="par">Fabricação sob encomenda. Entrega em 20 a 40 dias e 12 meses de garantia.</p>
+</form>
+<div class="done" id="done" hidden>
+<h3>Pedido enviado!</h3>
+<p id="thanks"></p>
+<code id="code"></code>
+<p class="par">Guarde este código para acompanhar a produção.</p>
+<button class="go" type="button" id="again">Fazer outro pedido</button>
+</div>
+</div>
+</aside>
+</main>
+<footer>Site fictício de demonstração. Nenhum pedido real é processado e os preços são inventados.</footer>
+
+<script>
+const SIZES=[
+{id:'compacta',n:'Compacta',d:'2,0 × 1,2 m',u:'Garagem ou varanda, para treinar em casa',p:3490,w:200,h:120},
+{id:'padrao',n:'Padrão',d:'2,7 × 1,5 m',u:'Jogos em família e treinos regulares',p:5290,w:270,h:150},
+{id:'oficial',n:'Oficial',d:'3,0 × 1,7 m',u:'Clubes, escolas e torneios',p:7990,w:300,h:170}];
+const SURF=[
+{id:'plana',n:'Plana',d:'Mais leve e fácil de transportar',p:0},
+{id:'curva',n:'Curva',d:'Bola mais viva, estilo profissional',p:900}];
+const TOPS=[
+{id:'azul',n:'Azul quadra',c:'#2457A6',p:0},{id:'verde',n:'Verde grama',c:'#2E8B57',p:0},
+{id:'laranja',n:'Laranja saibro',c:'#C8571C',p:0},{id:'branco',n:'Branco gelo',c:'#E9EEF0',p:0,light:1}];
+const FRAMES=[
+{id:'preto',n:'Preto',c:'#202322',p:0},{id:'grafite',n:'Grafite',c:'#4A525A',p:0},
+{id:'branco',n:'Branco',c:'#ECEBE6',p:0},{id:'vermelho',n:'Vermelho',c:'#C62E2E',p:150}];
+const NETS=[
+{id:'branca',n:'Branca',c:'#F4F4F2',p:0},{id:'preta',n:'Preta',c:'#1B1B1B',p:0},
+{id:'laranja',n:'Laranja',c:'#FF7A1A',p:0},{id:'lima',n:'Verde-limão',c:'#B4E013',p:0}];
+const LEGS=[
+{id:'fixos',n:'Pés fixos',d:'Mais firmes durante o jogo',p:0},
+{id:'rodas',n:'Rodízios com trava',d:'Fácil de guardar e mover',p:290}];
+const EXTRAS=[
+{id:'bola',n:'Bola oficial',p:149},{id:'placar',n:'Placar de pontos',p:180},
+{id:'rede',n:'Rede reserva',p:99},{id:'capa',n:'Capa de proteção',p:320},
+{id:'mont',n:'Montagem em casa',p:350}];
+const WOODS=[
+{id:'naval',n:'Compensado naval',d:'Camadas coladas que não empenam e aguentam a umidade. Quique regular, bom para casa e clube.',p:0,c:'#E0C48F',tag:'Mais indicada'},
+{id:'eucalipto',n:'Eucalipto laminado',d:'Fibras densas e pouco movimento com o calor. Resiste ao uso intenso em escolas.',p:600,c:'#C68A62'},
+{id:'freijo',n:'Freijó',d:'Madeira estável, de peso médio, com veio dourado. Quique firme e acabamento nobre.',p:1300,c:'#B8924A'},
+{id:'cumaru',n:'Cumaru',d:'Muito dura e densa: quique firme e vida longa. A mesa fica mais pesada, ideal para clubes.',p:2200,c:'#6E4328'}];
+const GROUPS=[
+{k:'size',t:'Tamanho',h:'A altura do tampo é de 76 cm em todos os modelos.',i:SIZES,kind:'card'},
+{k:'wood',t:'Madeira do tampo',h:'Madeiras que não empenam e mantêm o quique igual em toda a mesa.',i:WOODS,kind:'card'},
+{k:'surf',t:'Superfície do tampo',h:'',i:SURF,kind:'card'},
+{k:'top',t:'Cor do tampo',h:'A área onde a bola quica.',i:TOPS,kind:'sw'},
+{k:'frame',t:'Cor da estrutura',h:'Borda e pernas da mesa.',i:FRAMES,kind:'sw'},
+{k:'net',t:'Cor da rede',h:'A rede fica no meio e divide os dois lados.',i:NETS,kind:'sw'},
+{k:'legs',t:'Pés da mesa',h:'',i:LEGS,kind:'card'},
+{k:'logo',t:'Nome no tampo',h:'Opcional. Escreva o nome do seu time ou do clube (+ R$ 250).',kind:'text'},
+{k:'extras',t:'Acessórios',h:'Marque quantos quiser.',i:EXTRAS,kind:'check'}];
+const S={size:'padrao',wood:'naval',surf:'plana',top:'azul',frame:'preto',net:'branca',legs:'fixos',logo:'',extras:[],qty:1};
+const $=s=>document.querySelector(s);
+const brl=n=>n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const pick=(l,id)=>l.find(x=>x.id===id);
+const price=x=>x.p?'+ '+brl(x.p):'Incluso';
+const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const shade=(h,a)=>{const n=parseInt(h.slice(1),16);return '#'+[n>>16,n>>8&255,n&255].map(v=>{v=Math.round(a<0?v*(1+a):v+(255-v)*a);return v.toString(16).padStart(2,'0')}).join('')};
+
+function buildOptions(){
+  $('#opts').innerHTML=GROUPS.map(g=>{
+    const hint=g.h?`<p class="hint">${g.h}</p>`:'';
+    if(g.kind==='text')return `<fieldset><legend>${g.t}</legend>${hint}<input class="t" type="text" name="logo" maxlength="14" placeholder="Ex.: Os Craques" aria-label="Nome no tampo"></fieldset>`;
+    const multi=g.kind==='check';
+    const items=g.i.map(x=>{
+      const on=multi?S.extras.includes(x.id):S[g.k]===x.id;
+      let body;
+      if(g.kind==='sw')body=`<span class="dot" style="background:${x.c}"></span><b>${x.n}</b>${x.p?`<small>${price(x)}</small>`:''}`;
+      else if(g.k==='wood')body=`<span class="wd" style="background:repeating-linear-gradient(100deg,${x.c} 0 14px,${shade(x.c,-.14)} 14px 16px)"></span><b>${x.n}</b>${x.tag?`<span class="tag">${x.tag}</span>`:''}<small>${x.d}</small><span class="pr">${price(x)}</span>`;
+      else if(g.k==='size')body=`<b>${x.n} · ${x.d}</b><small>${x.u}</small><span class="pr">${brl(x.p)}</span>`;
+      else if(multi)body=`<span><b>${x.n}</b></span><span class="pr">${price(x)}</span>`;
+      else body=`<b>${x.n}</b><small>${x.d}</small><span class="pr">${price(x)}</span>`;
+      return `<label class="opt"><input type="${multi?'checkbox':'radio'}" name="${g.k}" value="${x.id}" ${on?'checked':''}><span class="b">${body}</span></label>`;
+    }).join('');
+    return `<fieldset><legend>${g.t}</legend>${hint}<div class="opts ${g.kind}">${items}</div></fieldset>`;
+  }).join('');
+}
+
+function drawTable(){
+  const z=pick(SIZES,S.size),W=z.w,H=z.h,M=24,TW=W+2*M,TH=H+2*M;
+  const top=pick(TOPS,S.top),fr=pick(FRAMES,S.frame).c,net=pick(NETS,S.net).c,wo=pick(WOODS,S.wood);
+  const pl=S.extras.includes('placar'),PL=26,PT=22,PR=10,PB=10+(pl?38:0);
+  const VW=TW+PL+PR,VH=TH+PT+PB,cx=TW/2,cy=TH/2;
+  const ln=top.light?'rgba(20,30,40,.6)':'rgba(255,255,255,.8)';
+  const m=n=>(n/100).toFixed(1).replace('.',',')+' m';
+  const st=(o,c)=>`<stop offset="${o}" stop-color="${c}"/>`;
+  const bk=(o,a)=>`<stop offset="${o}" stop-color="#000" stop-opacity="${a}"/>`;
+  let s=`<svg viewBox="0 0 ${VW} ${VH}" style="width:${(VW/(348+PL+PR)*100).toFixed(1)}%;max-width:100%" role="img" aria-label="Prévia da mesa de futmesa ${z.n.toLowerCase()}, em ${wo.n.toLowerCase()}">`;
+  s+=`<defs>
+<linearGradient id="gf" x1="0" y1="0" x2="1" y2="1">${st(0,shade(fr,.28))}${st(1,shade(fr,-.3))}</linearGradient>
+<linearGradient id="gt" x1="0" y1="0" x2="1" y2="1">${st(0,shade(top.c,.12))}${st(1,shade(top.c,-.15))}</linearGradient>
+<linearGradient id="gs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="ch" x1="0" y1="0" x2="1" y2="0">${bk(0,.32)}${bk(.1,0)}${bk(.9,0)}${bk(1,.32)}</linearGradient>
+<linearGradient id="cv" x1="0" y1="0" x2="0" y2="1">${bk(0,.32)}${bk(.14,0)}${bk(.86,0)}${bk(1,.32)}</linearGradient>
+<linearGradient id="nl" x1="0" y1="0" x2="1" y2="0">${bk(0,0)}${bk(1,.3)}</linearGradient>
+<linearGradient id="nr" x1="0" y1="0" x2="1" y2="0">${bk(0,.3)}${bk(1,0)}</linearGradient>
+<pattern id="gr" width="46" height="14" patternUnits="userSpaceOnUse"><path d="M0 3Q12 0 23 3T46 3M0 8Q12 5 23 8T46 8M0 12.5Q12 10 23 12.5T46 12.5" fill="none" stroke="#000" stroke-opacity=".24" stroke-width=".8"/></pattern>
+<pattern id="mesh" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0H4M0 0V4" stroke="#000" stroke-opacity=".38" stroke-width=".8" fill="none"/></pattern></defs>`;
+  s+=`<g style="stroke:var(--mute);fill:none" stroke-width="1"><path d="M${PL+M} ${PT-9}H${PL+M+W}M${PL+M} ${PT-12}V${PT-6}M${PL+M+W} ${PT-12}V${PT-6}M${PL-9} ${PT+M}V${PT+M+H}M${PL-12} ${PT+M}H${PL-6}M${PL-12} ${PT+M+H}H${PL-6}"/></g>`;
+  const dc='style="fill:var(--mute)" font-family="DM Sans,sans-serif" font-size="9" text-anchor="middle"';
+  s+=`<text ${dc} x="${PL+M+W/2}" y="8">${m(W)}</text><text ${dc} transform="translate(10 ${PT+M+H/2}) rotate(-90)">${m(H)}</text>`;
+  s+=`<g transform="translate(${PL} ${PT})">`;
+  s+=`<rect x="10" y="10" width="${TW-20}" height="${TH-20}" rx="9" fill="url(#gf)" stroke="rgba(0,0,0,.4)" stroke-width="1.2"/>`;
+  s+=`<rect x="11" y="11" width="${TW-22}" height="${TH-22}" rx="8" fill="none" stroke="#fff" stroke-opacity=".28"/>`;
+  const rim=`x="16" y="16" width="${TW-32}" height="${TH-32}" rx="5"`;
+  s+=`<rect ${rim} fill="${wo.c}" stroke="rgba(0,0,0,.4)"/><rect ${rim} fill="url(#gr)"/>`;
+  const sf=`x="${M}" y="${M}" width="${W}" height="${H}"`;
+  s+=`<rect ${sf} rx="3" fill="url(#gt)"/><rect ${sf} rx="3" fill="url(#gr)" opacity=".45"/>`;
+  if(S.surf==='curva')s+=`<rect ${sf} fill="url(#ch)"/><rect ${sf} fill="url(#cv)"/>`;
+  s+=`<rect ${sf} rx="3" fill="url(#gs)" stroke="rgba(0,0,0,.35)"/>`;
+  s+=`<g fill="none" stroke="${ln}" stroke-width="1.6"><rect x="${M+5}" y="${M+5}" width="${W-10}" height="${H-10}"/><circle cx="${cx}" cy="${cy}" r="${(H*.17).toFixed(1)}" stroke-width="1.2"/><line x1="${cx-W*.22}" y1="${M+5}" x2="${cx-W*.22}" y2="${TH-M-5}" stroke-width="1" stroke-opacity=".6"/><line x1="${cx+W*.22}" y1="${M+5}" x2="${cx+W*.22}" y2="${TH-M-5}" stroke-width="1" stroke-opacity=".6"/><line x1="${M+5}" y1="${cy}" x2="${cx-4}" y2="${cy}" stroke-dasharray="4 4"/><line x1="${cx+4}" y1="${cy}" x2="${TW-M-5}" y2="${cy}" stroke-dasharray="4 4"/></g>`;
+  const name=esc(S.logo.trim().toUpperCase());
+  if(name){const fs=Math.min(H*.14,(W/2-30)/(name.length*.68));
+    const t=(x,r)=>`<text x="${x}" y="${cy+fs*.35}" text-anchor="middle" font-family="Bricolage Grotesque,sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${ln}" ${r?`transform="rotate(180 ${x}${cy})"`:''}>${name}</text>`;
+    s+=t(M+W/4,0)+t(M+W*3/4,1);}
+  s+=`<rect x="${cx-14}" y="${M}" width="10" height="${H}" fill="url(#nl)"/><rect x="${cx+4}" y="${M}" width="10" height="${H}" fill="url(#nr)"/>`;
+  s+=`<rect x="${cx-4}" y="12" width="8" height="${TH-24}" fill="${net}" stroke="rgba(0,0,0,.45)" stroke-width=".8"/><rect x="${cx-4}" y="12" width="8" height="${TH-24}" fill="url(#mesh)"/><line x1="${cx}" y1="12" x2="${cx}" y2="${TH-12}" stroke="#fff" stroke-opacity=".55"/>`;
+  [10,TH-10].forEach(y=>{s+=`<rect x="${cx-9}" y="${y-6}" width="18" height="12" rx="4" fill="url(#gf)" stroke="rgba(0,0,0,.45)"/><circle cx="${cx-4.5}" cy="${y}" r="1.4" fill="rgba(0,0,0,.5)"/><circle cx="${cx+4.5}" cy="${y}" r="1.4" fill="rgba(0,0,0,.5)"/>`});
+  [[2,2],[TW-16,2],[2,TH-16],[TW-16,TH-16]].forEach(p=>{
+    s+=`<rect x="${p[0]}" y="${p[1]}" width="14" height="14" rx="4" fill="url(#gf)" stroke="rgba(0,0,0,.45)"/>`;
+    s+=S.legs==='rodas'?`<circle cx="${p[0]+7}" cy="${p[1]+7}" r="5.5" fill="#1b1b1b" stroke="#9aa5a0" stroke-width="1.4"/><circle cx="${p[0]+7}" cy="${p[1]+7}" r="1.8" fill="#9aa5a0"/><rect x="${p[0]+5}" y="${p[1]-1}" width="4" height="2.5" rx="1" fill="#D93A3A"/>`:`<circle cx="${p[0]+7}" cy="${p[1]+7}" r="3.4" fill="#111" fill-opacity=".55"/>`});
+  const bx=M+W*.27,by=cy+H*.2,pts=[0,1,2,3,4].map(i=>{const a=(-90+72*i)*Math.PI/180;return[Math.cos(a),Math.sin(a)]});
+  const q=(p,r)=>`${(bx+p[0]*r).toFixed(1)},${(by+p[1]*r).toFixed(1)}`;
+  s+=`<path d="M${bx+4} ${by-8}Q${cx-W*.02} ${cy-H*.62} ${cx+W*.2} ${cy-H*.1}" fill="none" stroke="${ln}" stroke-width="1.3" stroke-dasharray="3 3.5" stroke-linecap="round"/><circle cx="${cx+W*.2}" cy="${cy-H*.1}" r="2" fill="${ln}"/>`;
+  s+=`<ellipse cx="${bx+2.5}" cy="${by+3.5}" rx="7" ry="5" fill="#000" fill-opacity=".28"/><circle cx="${bx}" cy="${by}" r="7.5" fill="#fff" stroke="#1b1b1b" stroke-width=".9"/><polygon points="${pts.map(p=>q(p,3)).join(' ')}" fill="#1b1b1b"/>${pts.map(p=>`<line x1="${q(p,3).split(',')[0]}" y1="${q(p,3).split(',')[1]}" x2="${q(p,7.3).split(',')[0]}" y2="${q(p,7.3).split(',')[1]}" stroke="#1b1b1b" stroke-width=".8"/>`).join('')}`;
+  if(pl){const nf=`text-anchor="middle" font-family="Bricolage Grotesque,sans-serif" font-weight="800"`;
+    s+=`<rect x="${cx-48}" y="${TH+8}" width="96" height="28" rx="7" fill="#151a18" stroke="rgba(0,0,0,.5)"/><text ${nf} x="${cx-22}" y="${TH+28}" font-size="17" fill="#FF7A2B">03</text><text ${nf} x="${cx}" y="${TH+27}" font-size="15" fill="#9aa5a0">:</text><text ${nf} x="${cx+22}" y="${TH+28}" font-size="17" fill="#FF7A2B">01</text>`;}
+  s+=`</g></svg>`;
+  $('#preview').innerHTML=s;
+  $('#dims').textContent=`Mesa ${z.n.toLowerCase()} de ${wo.n.toLowerCase()}: ${z.d}, vista de cima`;
+}
+
+function lines(){
+  const z=pick(SIZES,S.size),sf=pick(SURF,S.surf),tp=pick(TOPS,S.top),fr=pick(FRAMES,S.frame),nt=pick(NETS,S.net),lg=pick(LEGS,S.legs),wd=pick(WOODS,S.wood);
+  const ex=S.extras.map(id=>pick(EXTRAS,id)),logo=S.logo.trim()?250:0;
+  const unit=z.p+wd.p+sf.p+tp.p+fr.p+nt.p+lg.p+logo+ex.reduce((a,x)=>a+x.p,0);
+  const rows=[['Tamanho',`${z.n} (${z.d})`],['Madeira',wd.n],['Superfície',sf.n],['Tampo',tp.n],['Estrutura',fr.n],['Rede',nt.n],['Pés',lg.n],['Nome no tampo',S.logo.trim()||'Sem nome'],['Acessórios',ex.length?ex.map(x=>x.n).join(', '):'Nenhum']];
+  return{rows,total:unit*S.qty};
+}
+
+function update(){
+  drawTable();
+  const{rows,total}=lines();
+  $('#list').innerHTML=rows.map(r=>`<div class="r"><dt>${r[0]}</dt><dd>${esc(r[1])}</dd></div>`).join('');
+  $('#total').textContent=brl(total);
+  $('#par').textContent=`ou 10x de ${brl(total/10)} sem juros`;
+  $('#qty').textContent=S.qty;
+}
+
+$('#opts').addEventListener('input',e=>{
+  const i=e.target;if(i.tagName!=='INPUT')return;
+  if(i.name==='extras')S.extras=[...document.querySelectorAll('input[name=extras]:checked')].map(x=>x.value);
+  else S[i.name]=i.value;
+  update();
+});
+$('#plus').onclick=()=>{S.qty=Math.min(10,S.qty+1);update()};
+$('#minus').onclick=()=>{S.qty=Math.max(1,S.qty-1);update()};
+$('#form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const nome=new FormData(e.target).get('nome').trim().split(' ')[0];
+  $('#thanks').textContent=`Obrigado, ${nome}! Recebemos seu pedido de ${S.qty} mesa${S.qty>1?'s':''} e logo enviaremos o orçamento por e-mail.`;
+  $('#code').textContent='GP-'+String(Math.floor(10000+Math.random()*90000));
+  $('#form').hidden=true;$('#done').hidden=false;
+});
+$('#again').onclick=()=>{$('#form').reset();$('#form').hidden=false;$('#done').hidden=true};
+
+buildOptions();update();
+</script>
+</body>
+</html>
